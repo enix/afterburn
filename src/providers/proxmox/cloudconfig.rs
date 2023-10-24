@@ -142,7 +142,7 @@ impl MetadataProvider for ProxmoxCloudConfig {
             .network_config
             .config
             .iter()
-            .filter(|config: &&ProxmoxCloudNetworkConfigEntry| config.network_type == "nameserver")
+            .filter(|config| config.network_type == "nameserver")
             .collect::<Vec<_>>();
 
         if nameservers.len() > 1 {
@@ -153,7 +153,7 @@ impl MetadataProvider for ProxmoxCloudConfig {
             .network_config
             .config
             .iter()
-            .filter(|config: &&ProxmoxCloudNetworkConfigEntry| config.network_type == "physical")
+            .filter(|config| config.network_type == "physical")
             .map(|entry| entry.to_interface())
             .collect::<Result<Vec<_>, _>>()?;
 
@@ -243,7 +243,7 @@ impl ProxmoxCloudNetworkConfigEntry {
         }
 
         if let Some(mac) = &self.mac_address {
-            iface.mac_address = Some(MacAddr::from_str(&mac)?);
+            iface.mac_address = Some(MacAddr::from_str(mac)?);
         }
 
         Ok(iface)
