@@ -61,7 +61,7 @@ The following platforms are supported, with a different set of features availabl
 * powervs
   - Attributes
   - SSH keys
-* proxmox
+* proxmoxve
   - Attributes
   - Hostname
   - SSH keys

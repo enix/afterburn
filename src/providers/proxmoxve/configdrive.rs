@@ -1,4 +1,4 @@
-use super::ProxmoxCloudConfig;
+use super::ProxmoxVECloudConfig;
 use crate::{network, providers::MetadataProvider};
 use anyhow::{Context, Result};
 use openssh_keys::PublicKey;
@@ -6,12 +6,12 @@ use slog_scope::error;
 use std::path::{Path, PathBuf};
 
 #[derive(Debug)]
-pub struct ProxmoxConfigDrive {
+pub struct ProxmoxVEConfigDrive {
     mount_path: PathBuf,
-    config: ProxmoxCloudConfig,
+    config: ProxmoxVECloudConfig,
 }
 
-impl ProxmoxConfigDrive {
+impl ProxmoxVEConfigDrive {
     pub fn try_new() -> Result<Self> {
         const CONFIG_DRIVE_LABEL: &str = "cidata";
         const TARGET_FS: &str = "iso9660";
@@ -30,13 +30,13 @@ impl ProxmoxConfigDrive {
 
         let mount_path = target.path().to_owned();
         Ok(Self {
-            config: ProxmoxCloudConfig::try_new(&mount_path)?,
+            config: ProxmoxVECloudConfig::try_new(&mount_path)?,
             mount_path,
         })
     }
 }
 
-impl MetadataProvider for ProxmoxConfigDrive {
+impl MetadataProvider for ProxmoxVEConfigDrive {
     fn hostname(&self) -> Result<Option<String>> {
         self.config.hostname()
     }
@@ -50,10 +50,10 @@ impl MetadataProvider for ProxmoxConfigDrive {
     }
 }
 
-impl Drop for ProxmoxConfigDrive {
+impl Drop for ProxmoxVEConfigDrive {
     fn drop(&mut self) {
         if let Err(e) = crate::util::unmount(&self.mount_path, 3) {
-            error!("failed to cleanup Proxmox config-drive: {:?}", e);
+            error!("failed to cleanup Proxmox VE config-drive: {:?}", e);
         };
     }
 }

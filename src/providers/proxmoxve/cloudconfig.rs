@@ -17,25 +17,25 @@ use std::{
 };
 
 #[derive(Debug)]
-pub struct ProxmoxCloudConfig {
-    pub meta_data: ProxmoxCloudMetaData,
-    pub user_data: ProxmoxCloudUserData,
-    pub vendor_data: ProxmoxCloudVendorData,
-    pub network_config: ProxmoxCloudNetworkConfig,
+pub struct ProxmoxVECloudConfig {
+    pub meta_data: ProxmoxVECloudMetaData,
+    pub user_data: ProxmoxVECloudUserData,
+    pub vendor_data: ProxmoxVECloudVendorData,
+    pub network_config: ProxmoxVECloudNetworkConfig,
 }
 
 #[derive(Debug, Deserialize)]
-pub struct ProxmoxCloudMetaData {
+pub struct ProxmoxVECloudMetaData {
     #[serde(rename = "instance-id")]
     pub instance_id: String,
 }
 
 #[derive(Debug, Deserialize)]
-pub struct ProxmoxCloudUserData {
+pub struct ProxmoxVECloudUserData {
     pub hostname: String,
     pub manage_etc_hosts: bool,
     pub fqdn: String,
-    pub chpasswd: ProxmoxCloudChpasswdConfig,
+    pub chpasswd: ProxmoxVECloudChpasswdConfig,
     pub users: Vec<String>,
     pub package_upgrade: bool,
     #[serde(default)]
@@ -43,21 +43,21 @@ pub struct ProxmoxCloudUserData {
 }
 
 #[derive(Debug, Deserialize)]
-pub struct ProxmoxCloudChpasswdConfig {
+pub struct ProxmoxVECloudChpasswdConfig {
     pub expire: bool,
 }
 
 #[derive(Debug, Deserialize)]
-pub struct ProxmoxCloudVendorData {}
+pub struct ProxmoxVECloudVendorData {}
 
 #[derive(Debug, Deserialize)]
-pub struct ProxmoxCloudNetworkConfig {
+pub struct ProxmoxVECloudNetworkConfig {
     pub version: u32,
-    pub config: Vec<ProxmoxCloudNetworkConfigEntry>,
+    pub config: Vec<ProxmoxVECloudNetworkConfigEntry>,
 }
 
 #[derive(Debug, Deserialize)]
-pub struct ProxmoxCloudNetworkConfigEntry {
+pub struct ProxmoxVECloudNetworkConfigEntry {
     #[serde(rename = "type")]
     pub network_type: String,
     pub name: Option<String>,
@@ -67,11 +67,11 @@ pub struct ProxmoxCloudNetworkConfigEntry {
     #[serde(default)]
     pub search: Vec<String>,
     #[serde(default)]
-    pub subnets: Vec<ProxmoxCloudNetworkConfigSubnet>,
+    pub subnets: Vec<ProxmoxVECloudNetworkConfigSubnet>,
 }
 
 #[derive(Debug, Deserialize)]
-pub struct ProxmoxCloudNetworkConfigSubnet {
+pub struct ProxmoxVECloudNetworkConfigSubnet {
     #[serde(rename = "type")]
     pub subnet_type: String,
     pub address: Option<String>,
@@ -79,7 +79,7 @@ pub struct ProxmoxCloudNetworkConfigSubnet {
     pub gateway: Option<String>,
 }
 
-impl ProxmoxCloudConfig {
+impl ProxmoxVECloudConfig {
     pub fn try_new(path: &Path) -> Result<Self> {
         Ok(Self {
             meta_data: serde_yaml::from_reader(File::open(path.join("meta-data"))?)?,
@@ -90,17 +90,17 @@ impl ProxmoxCloudConfig {
     }
 }
 
-impl MetadataProvider for ProxmoxCloudConfig {
+impl MetadataProvider for ProxmoxVECloudConfig {
     fn attributes(&self) -> Result<HashMap<String, String>> {
         let mut out = HashMap::new();
 
         out.insert(
-            "AFTERBURN_PROXMOX_HOSTNAME".to_owned(),
+            "AFTERBURN_PROXMOXVE_HOSTNAME".to_owned(),
             self.hostname()?.unwrap_or_default(),
         );
 
         out.insert(
-            "AFTERBURN_PROXMOX_INSTANCE_ID".to_owned(),
+            "AFTERBURN_PROXMOXVE_INSTANCE_ID".to_owned(),
             self.meta_data.instance_id.clone(),
         );
 
@@ -108,13 +108,13 @@ impl MetadataProvider for ProxmoxCloudConfig {
             first_interface.ip_addresses.iter().for_each(|ip| match ip {
                 IpNetwork::V4(network) => {
                     out.insert(
-                        "AFTERBURN_PROXMOX_IPV4".to_owned(),
+                        "AFTERBURN_PROXMOXVE_IPV4".to_owned(),
                         network.ip().to_string(),
                     );
                 }
                 IpNetwork::V6(network) => {
                     out.insert(
-                        "AFTERBURN_PROXMOX_IPV6".to_owned(),
+                        "AFTERBURN_PROXMOXVE_IPV6".to_owned(),
                         network.ip().to_string(),
                     );
                 }
@@ -169,7 +169,7 @@ impl MetadataProvider for ProxmoxCloudConfig {
     }
 }
 
-impl ProxmoxCloudNetworkConfigEntry {
+impl ProxmoxVECloudNetworkConfigEntry {
     pub fn to_interface(&self) -> Result<network::Interface> {
         if self.network_type != "physical" {
             return Err(anyhow::anyhow!(
@@ -190,7 +190,7 @@ impl ProxmoxCloudNetworkConfigEntry {
             // filled below because Option::try_map doesn't exist yet
             mac_address: None,
 
-            // unsupported by proxmox
+            // unsupported by proxmox ve
             bond: None,
 
             // default values

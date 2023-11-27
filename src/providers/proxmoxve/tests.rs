@@ -1,4 +1,4 @@
-use super::ProxmoxCloudConfig;
+use super::ProxmoxVECloudConfig;
 use crate::{
     network::{self, NetworkRoute},
     providers::MetadataProvider,
@@ -10,34 +10,34 @@ use std::{net::IpAddr, path::Path, str::FromStr};
 
 #[test]
 fn test_attributes() {
-    let config = ProxmoxCloudConfig::try_new(Path::new("tests/fixtures/proxmox/static"))
+    let config = ProxmoxVECloudConfig::try_new(Path::new("tests/fixtures/proxmoxve/static"))
         .expect("cannot parse config");
     let attributes = config.attributes().expect("cannot get hostname");
 
     assert_eq!(
-        attributes["AFTERBURN_PROXMOX_HOSTNAME"],
+        attributes["AFTERBURN_PROXMOXVE_HOSTNAME"],
         "dummy".to_string()
     );
 
     assert_eq!(
-        attributes["AFTERBURN_PROXMOX_INSTANCE_ID"],
+        attributes["AFTERBURN_PROXMOXVE_INSTANCE_ID"],
         "15a9919cb91024fbd1d70fa07f0efa749cbba03b".to_string()
     );
 
     assert_eq!(
-        attributes["AFTERBURN_PROXMOX_IPV4"],
+        attributes["AFTERBURN_PROXMOXVE_IPV4"],
         "192.168.1.1".to_string()
     );
 
     assert_eq!(
-        attributes["AFTERBURN_PROXMOX_IPV6"],
+        attributes["AFTERBURN_PROXMOXVE_IPV6"],
         "2001:db8:85a3::8a2e:370:0".to_string()
     );
 }
 
 #[test]
 fn test_hostname() {
-    let config = ProxmoxCloudConfig::try_new(Path::new("tests/fixtures/proxmox/dhcp"))
+    let config = ProxmoxVECloudConfig::try_new(Path::new("tests/fixtures/proxmoxve/dhcp"))
         .expect("cannot parse config");
 
     assert_eq!(
@@ -49,7 +49,7 @@ fn test_hostname() {
 #[test]
 fn test_ssh_keys() {
     let test_ssh_key = PublicKey::from_str("ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDd1hElre4j44sbmULXyO5j6dRnkRFCMjEGtRSy2SuvFD8WyB5uectcEMvz7ORhQIVbPlz94wFjpSX5wl/gmSKL/7GOyerJo0Y2cvyjJJahuDn+JnIL0tT0HS1pJ5iJqQpxXeOAzMK5Heum+uGw9BzbiUHnRzjJr8Ltx4CAGMfubevD4SX32Q8BTQiaU4ZnGtdHo16pWwRsq1f6/UtL4gDCni9vm8QmmGDRloi/pBn1csjKw+volFyu/kSEmGLWow6NuT6TrhGAbMKas5HfYq0Mn3LGPZL7XjqJQ6CO0TzkG/BNplZT2tiwHtsvXsbePTp4ZUi4dkCMz2xR4eikaI1V dummy@dummy.local").unwrap();
-    let config = ProxmoxCloudConfig::try_new(Path::new("tests/fixtures/proxmox/dhcp"))
+    let config = ProxmoxVECloudConfig::try_new(Path::new("tests/fixtures/proxmoxve/dhcp"))
         .expect("cannot parse config");
 
     assert_eq!(
@@ -60,7 +60,7 @@ fn test_ssh_keys() {
 
 #[test]
 fn test_network_dhcp() {
-    let config = ProxmoxCloudConfig::try_new(Path::new("tests/fixtures/proxmox/dhcp"))
+    let config = ProxmoxVECloudConfig::try_new(Path::new("tests/fixtures/proxmoxve/dhcp"))
         .expect("cannot parse config");
 
     assert_eq!(
@@ -85,7 +85,7 @@ fn test_network_dhcp() {
 
 #[test]
 fn test_network_static() {
-    let config = ProxmoxCloudConfig::try_new(Path::new("tests/fixtures/proxmox/static"))
+    let config = ProxmoxVECloudConfig::try_new(Path::new("tests/fixtures/proxmoxve/static"))
         .expect("cannot parse config");
 
     assert_eq!(
