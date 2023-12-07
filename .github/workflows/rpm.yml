@@ -45,3 +45,12 @@ jobs:
         with:
           name: rpms
           path: rpms/
+
+      - name: Format version name
+        run: echo "VERSION=v$(date +'%Y%m%d.%H%M')" >> $GITHUB_ENV
+
+      - name: Create release
+        uses: ncipollo/release-action@v1
+        with:
+          tag: $VERSION
+          artifacts: "rpms/*.rpm"
