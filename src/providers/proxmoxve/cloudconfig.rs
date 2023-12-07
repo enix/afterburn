@@ -157,12 +157,14 @@ impl MetadataProvider for ProxmoxVECloudConfig {
             .map(|entry| entry.to_interface())
             .collect::<Result<Vec<_>, _>>()?;
 
-        if let Some(nameserver) = nameservers.first() {
-            interfaces[0].nameservers = nameserver
-                .address
-                .iter()
-                .map(|ip| IpAddr::from_str(ip))
-                .collect::<Result<Vec<IpAddr>, AddrParseError>>()?;
+        if let Some(iface) = interfaces.first_mut() {
+            if let Some(nameserver) = nameservers.first() {
+                iface.nameservers = nameserver
+                    .address
+                    .iter()
+                    .map(|ip| IpAddr::from_str(ip))
+                    .collect::<Result<Vec<IpAddr>, AddrParseError>>()?;
+            }
         }
 
         Ok(interfaces)
