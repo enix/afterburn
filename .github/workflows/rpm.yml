@@ -19,6 +19,8 @@ jobs:
   test-rpm-build:
     name: "Build (Fedora)"
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     container:
       image: registry.fedoraproject.org/fedora:latest
       options: --privileged
@@ -54,5 +56,3 @@ jobs:
         with:
           tag: $VERSION
           artifacts: "rpms/*.rpm"
-        permissions:
-          contents: write
