@@ -54,5 +54,5 @@ jobs:
       - name: Create release
         uses: ncipollo/release-action@v1
         with:
-          tag: $VERSION
+          tag: ${{ env.VERSION }}
           artifacts: "rpms/*.rpm"
