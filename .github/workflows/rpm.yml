@@ -54,3 +54,5 @@ jobs:
         with:
           tag: $VERSION
           artifacts: "rpms/*.rpm"
+        permissions:
+          contents: write
