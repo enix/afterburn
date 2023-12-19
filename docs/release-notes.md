@@ -23,6 +23,7 @@ Major changes:
 - Add support for Hetzner Cloud
 - Add support for Scaleway
 - Add Netplan guestinfo support on VMware
+- Add support for Proxmox VE
 
 Minor changes:
 
