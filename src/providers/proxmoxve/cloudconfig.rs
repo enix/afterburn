@@ -95,28 +95,22 @@ impl MetadataProvider for ProxmoxVECloudConfig {
         let mut out = HashMap::new();
 
         out.insert(
-            "AFTERBURN_PROXMOXVE_HOSTNAME".to_owned(),
+            "PROXMOXVE_HOSTNAME".to_owned(),
             self.hostname()?.unwrap_or_default(),
         );
 
         out.insert(
-            "AFTERBURN_PROXMOXVE_INSTANCE_ID".to_owned(),
+            "PROXMOXVE_INSTANCE_ID".to_owned(),
             self.meta_data.instance_id.clone(),
         );
 
         if let Some(first_interface) = self.networks()?.first() {
             first_interface.ip_addresses.iter().for_each(|ip| match ip {
                 IpNetwork::V4(network) => {
-                    out.insert(
-                        "AFTERBURN_PROXMOXVE_IPV4".to_owned(),
-                        network.ip().to_string(),
-                    );
+                    out.insert("PROXMOXVE_IPV4".to_owned(), network.ip().to_string());
                 }
                 IpNetwork::V6(network) => {
-                    out.insert(
-                        "AFTERBURN_PROXMOXVE_IPV6".to_owned(),
-                        network.ip().to_string(),
-                    );
+                    out.insert("PROXMOXVE_IPV6".to_owned(), network.ip().to_string());
                 }
             });
         }

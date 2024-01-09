@@ -14,23 +14,17 @@ fn test_attributes() {
         .expect("cannot parse config");
     let attributes = config.attributes().expect("cannot get hostname");
 
-    assert_eq!(
-        attributes["AFTERBURN_PROXMOXVE_HOSTNAME"],
-        "dummy".to_string()
-    );
+    assert_eq!(attributes["PROXMOXVE_HOSTNAME"], "dummy".to_string());
 
     assert_eq!(
-        attributes["AFTERBURN_PROXMOXVE_INSTANCE_ID"],
+        attributes["PROXMOXVE_INSTANCE_ID"],
         "15a9919cb91024fbd1d70fa07f0efa749cbba03b".to_string()
     );
 
-    assert_eq!(
-        attributes["AFTERBURN_PROXMOXVE_IPV4"],
-        "192.168.1.1".to_string()
-    );
+    assert_eq!(attributes["PROXMOXVE_IPV4"], "192.168.1.1".to_string());
 
     assert_eq!(
-        attributes["AFTERBURN_PROXMOXVE_IPV6"],
+        attributes["PROXMOXVE_IPV6"],
         "2001:db8:85a3::8a2e:370:0".to_string()
     );
 }
