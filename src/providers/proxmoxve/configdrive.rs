@@ -3,7 +3,10 @@ use crate::{network, providers::MetadataProvider};
 use anyhow::{Context, Result};
 use openssh_keys::PublicKey;
 use slog_scope::error;
-use std::path::{Path, PathBuf};
+use std::{
+    collections::HashMap,
+    path::{Path, PathBuf},
+};
 
 #[derive(Debug)]
 pub struct ProxmoxVEConfigDrive {
@@ -37,6 +40,10 @@ impl ProxmoxVEConfigDrive {
 }
 
 impl MetadataProvider for ProxmoxVEConfigDrive {
+    fn attributes(&self) -> Result<HashMap<String, String>> {
+        self.config.attributes()
+    }
+
     fn hostname(&self) -> Result<Option<String>> {
         self.config.hostname()
     }
