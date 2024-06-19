@@ -23,6 +23,7 @@
 //! function to fetch the metadata, and then add a match line in the top-level
 //! `fetch_metadata()` function in metadata.rs.
 
+pub mod akamai;
 pub mod aliyun;
 pub mod aws;
 pub mod cloudstack;
@@ -37,6 +38,7 @@ pub mod microsoft;
 pub mod openstack;
 pub mod packet;
 pub mod powervs;
+pub mod proxmoxve;
 pub mod scaleway;
 pub mod vmware;
 pub mod vultr;

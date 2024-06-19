@@ -4,16 +4,33 @@ nav_order: 8
 
 # Release notes
 
-## Upcoming Afterburn 5.6.0 (unreleased)
+## Upcoming Afterburn 5.7.0 (unreleased)
 
 Major changes:
 
+- Add support for Proxmox VE
 
 Minor changes:
 
+Packaging changes:
+
+
+## Afterburn 5.6.0
+
+Major changes:
+
+- Add support for Akamai Connected Cloud (Linode)
 
 Packaging changes:
 
+- Require Rust ≥ 1.75.0
+
+
+## Afterburn 5.5.1 (2024-01-12)
+
+Minor changes:
+
+- providers/vmware: add missing public functions for non-amd64
 
 
 ## Afterburn 5.5.0 (2023-11-22)

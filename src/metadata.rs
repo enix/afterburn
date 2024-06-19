@@ -15,6 +15,7 @@
 use anyhow::{bail, Result};
 
 use crate::providers;
+use crate::providers::akamai::AkamaiProvider;
 use crate::providers::aliyun::AliyunProvider;
 use crate::providers::aws::AwsProvider;
 use crate::providers::cloudstack::configdrive::ConfigDrive;
@@ -32,6 +33,7 @@ use crate::providers::openstack;
 use crate::providers::openstack::network::OpenstackProviderNetwork;
 use crate::providers::packet::PacketProvider;
 use crate::providers::powervs::PowerVSProvider;
+use crate::providers::proxmoxve::ProxmoxVEConfigDrive;
 use crate::providers::scaleway::ScalewayProvider;
 use crate::providers::vmware::VmwareProvider;
 use crate::providers::vultr::VultrProvider;
@@ -49,6 +51,7 @@ macro_rules! box_result {
 /// to the provider-specific fetch logic.
 pub fn fetch_metadata(provider: &str) -> Result<Box<dyn providers::MetadataProvider>> {
     match provider {
+        "akamai" => box_result!(AkamaiProvider::try_new()?),
         "aliyun" => box_result!(AliyunProvider::try_new()?),
         "aws" => box_result!(AwsProvider::try_new()?),
         "azure" => box_result!(Azure::try_new()?),
@@ -68,6 +71,7 @@ pub fn fetch_metadata(provider: &str) -> Result<Box<dyn providers::MetadataProvi
         "openstack-metadata" => box_result!(OpenstackProviderNetwork::try_new()?),
         "packet" => box_result!(PacketProvider::try_new()?),
         "powervs" => box_result!(PowerVSProvider::try_new()?),
+        "proxmoxve" => box_result!(ProxmoxVEConfigDrive::try_new()?),
         "scaleway" => box_result!(ScalewayProvider::try_new()?),
         "vmware" => box_result!(VmwareProvider::try_new()?),
         "vultr" => box_result!(VultrProvider::try_new()?),
